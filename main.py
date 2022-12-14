@@ -68,7 +68,7 @@ def m_search():
     for h in bads:
         t = set(hashes).difference(set(h))
         if len(t) == 1:
-            print(f"found {t}")
+            print(f"found {t}, {hashes}")
             if all[0] in t:
                 print('lt')
                 click(BOX[0], BOX[1])
