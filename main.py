@@ -7,6 +7,21 @@ from pynput import keyboard
 
 # import subprocess
 
+import win32api
+import win32con
+
+BOX = (1090, 680, 1788, 842)
+bw, bh = (344, 76)
+sl, st = (354, 86)
+
+def click(x, y):
+    win32api.SetCursorPos((x, y))
+    # win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
+    # win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+
+
+click(1090, 680)
+exit(1)
 
 FILE = 'bads.json'
 with open(FILE, "r") as f:
@@ -15,9 +30,7 @@ with open(FILE, "r") as f:
 
 def my_write():
     start = time.time()
-    s = ss.grab(bbox=(1090, 680, 1788, 842))
-    bw, bh = (344, 76)
-    sl, st = (354, 86)
+    s = ss.grab(bbox=BOX)
     lt = s.crop(box=(0, 0, bw, bh))
     rt = s.crop(box=(sl, 0, sl + bw, bh))
     lb = s.crop(box=(0, st, bw, st + bh))
