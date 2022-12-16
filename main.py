@@ -3,6 +3,7 @@ from collections import defaultdict
 import pyscreenshot as ss
 import hashlib
 import json
+import time
 # from PIL import Image
 
 from pynput import keyboard
@@ -75,6 +76,8 @@ def m_search():
     hashes, all, ex = m_get_hashes()
     if len(hashes) != 4:
         print(f'search {len(hashes)}')
+        time.sleep(1)
+        m_search()
         return
 
     if ex in bads:
@@ -83,20 +86,23 @@ def m_search():
             if len(t) == 1:
                 print(f"found {t}, {hashes}")
                 if all[0] in t:
-                    print('lt')
+                    # print('lt')
                     click(BOX[0] + bw // 2, EXTRA_H + BOX[1] + bh // 2)
                 if all[1] in t:
-                    print('rt')
+                    # print('rt')
                     click(BOX[0] + sl + bw // 2, EXTRA_H + BOX[1] + bh // 2)
                 if all[2] in t:
-                    print('lb')
+                    # print('lb')
                     click(BOX[0] + bw // 2, EXTRA_H + BOX[1] + st + bh // 2)
                 if all[3] in t:
-                    print('rb')
+                    # print('rb')
                     click(BOX[0] + sl + bw // 2, EXTRA_H + BOX[1] + st + bh // 2)
+                time.sleep(1.5)
+                m_search()
                 return
+        print(f"not found", all)
 
-    print(f"not found", all)
+    print(f"not found image", ex, all)
     win32api.SetCursorPos((int((BOX[0] + BOX[2]) / 2), int((BOX[1] + BOX[3]) / 2)))
 
 
@@ -109,13 +115,16 @@ def m_write():
     if ex not in bads:
         bads[ex] = []
 
-    if hashes not in bads[ex]:
+    if hashes not in bads[ex] and len(hashes) == 3:
         bads[ex].append(hashes)
         with open(FILE, "w") as file:
             json.dump(bads, file)
         print("saved", len(bads))
     else:
         print("exist")
+
+    time.sleep(1.5)
+    m_search()
 
 
 try:
